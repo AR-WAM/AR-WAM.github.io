@@ -1,0 +1,11 @@
+# Internal design docs and dev tooling stay local, not on the public site
+docs/
+tools/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS junk
+.DS_Store
+Thumbs.db

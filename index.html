@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="AR-WAM: A Visual-Conditioned Agent-Ready World Action Model for Robotic Manipulation">
+  <meta name="keywords" content="AR-WAM, World Action Model, Robotic Manipulation, VLA, Agent, Visual Prompting">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AR-WAM: A Visual-Conditioned Agent-Ready World Action Model for Robotic Manipulation</title>
+
+  <link rel="stylesheet" href="./static/css/noto-sans.css">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="./static/academicons/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+
+  <script defer src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item navbar-title" href="#top">
+        <span class="icon"><i class="fas fa-robot"></i></span>
+        <span>&nbsp;AR-WAM</span>
+      </a>
+      <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu" id="navMenu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#abstract">Abstract</a>
+        <a class="navbar-item" href="#method">Method</a>
+        <a class="navbar-item" href="#foresight">Foresight</a>
+        <a class="navbar-item" href="#agent-loop">Agent Loop</a>
+        <a class="navbar-item" href="#experiments">Experiments</a>
+        <a class="navbar-item" href="#bibtex">BibTeX</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= Hero ================= -->
+<section class="hero hero-with-video" id="top">
+  <video class="hero-bg-video" autoplay muted loop playsinline poster="./video/hero_poster.jpg">
+    <source src="./video/hero_loop.mp4" type="video/mp4">
+  </video>
+  <div class="hero-bg-overlay"></div>
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <div class="hero-content">
+            <a class="arxiv-badge" href="https://arxiv.org/abs/2609.23578">
+              <i class="ai ai-arxiv"></i><span>arXiv:2609.23578</span>
+            </a>
+            <h1 class="title is-2 publication-title">
+              <span style="color: var(--hkust-gold);">AR-WAM</span>: A Visual-Conditioned Agent-Ready World Action Model for Robotic Manipulation
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=WudbxWkAAAAJ">Yicheng Jiang</a><sup>1,*</sup>,</span>
+              <span class="author-block"><a href="https://jasongan.org/">Zesen Gan</a><sup>1,*</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=B9qnJaYAAAAJ">Xiaobo Wang</a><sup>2,3,&dagger;</sup>,</span>
+              <span class="author-block"><a href="https://allenhtl.com/">Tianlun He</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=q07NiEAAAAAJ">Chenxu Zhao</a><sup>4</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=huB8opoAAAAJ">Minghui Wu</a><sup>4</sup>,</span>
+              <span class="author-block"><a href="https://github.com/JCSTARS">Xinyue Wang</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=DjQT_G0AAAAJ">Jiaxu Wang</a><sup>5</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=s2pC5LAAAAAJ">Junhao He</a><sup>6</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=mt5mvZ8AAAAJ">Jianan Wang</a><sup>7</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=i4v4ng4AAAAJ">Qiming Shao</a><sup>1,&dagger;</sup></span>
+            </div>
+            <div class="is-size-6 affiliations">
+              <span class="author-block"><sup>1</sup>The Hong Kong University of Science and Technology,</span>
+              <span class="author-block"><sup>2</sup>Shenzhen University of Advanced Technology,</span>
+              <span class="author-block"><sup>3</sup>Sangfor Technologies Inc.,</span>
+              <span class="author-block"><sup>4</sup>Mininglamp Technology,</span>
+              <span class="author-block"><sup>5</sup>MMLab, The Chinese University of Hong Kong,</span>
+              <br>
+              <span class="author-block"><sup>6</sup>The University of British Columbia,</span>
+              <span class="author-block"><sup>7</sup>Astribot</span>
+            </div>
+            <div class="author-notes">
+              <span><sup>*</sup>Equal contribution</span>
+              <span style="margin-left: 1rem;"><sup>&dagger;</sup>Corresponding authors</span>
+            </div>
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2609.23578" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2609.23578" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a class="button is-normal is-rounded is-dark" disabled title="Coming soon">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code (Coming Soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a class="button is-normal is-rounded is-dark" disabled title="Coming soon">
+                  <span class="icon hf-emoji">🤗</span>
+                  <span>Dataset (Coming Soon)</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Highlights ================= -->
+<section class="section" id="highlights" style="padding-top: 2.5rem; padding-bottom: 1.5rem;">
+  <div class="container is-max-desktop">
+    <div class="columns is-multiline has-text-centered">
+      <div class="column is-3-desktop is-6-tablet">
+        <div class="stat-card">
+          <div class="stat-num">0.5B</div>
+          <div class="stat-label">parameters, frozen visual encoder,<br>no language encoder</div>
+        </div>
+      </div>
+      <div class="column is-3-desktop is-6-tablet">
+        <div class="stat-card">
+          <div class="stat-num">85.7%</div>
+          <div class="stat-label">highest average success on RoboTwin 2.0,<br>87.2% clean / 84.2% randomized</div>
+        </div>
+      </div>
+      <div class="column is-3-desktop is-6-tablet">
+        <div class="stat-card">
+          <div class="stat-num">14.1 ms</div>
+          <div class="stat-label">inference latency per action chunk,<br>4.4&times; faster than &pi;<sub>0.5</sub></div>
+        </div>
+      </div>
+      <div class="column is-3-desktop is-6-tablet">
+        <div class="stat-card">
+          <div class="stat-num">+36.7%</div>
+          <div class="stat-label">real-robot long-horizon success<br>over the strongest baseline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Abstract ================= -->
+<section class="section" id="abstract" style="padding-top: 1.5rem;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 section-heading">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            As AI agents become increasingly capable, agent-driven robotic control is emerging as a
+            compelling paradigm. However, prevailing vision-language-action (VLA) models and
+            world action models (WAMs) still rely on natural-language instructions to specify
+            manipulation tasks, an ill-suited interface for agent-driven control: referentially
+            ambiguous, spatially imprecise, redundant with the agent's inherent language
+            understanding, and entangling intent with execution.
+          </p>
+          <p>
+            We present AR-WAM, a visual-conditioned, agent-ready world action model that replaces
+            language with two complementary conditions: a visual grounding prompt (a bounding
+            box of the target) denoting the interaction object and location, and a learnable
+            operation token dictating the atomic skill to execute. Our compact 0.5B-parameter
+            model, with a frozen pretrained visual encoder and no language encoder, predicts scene
+            evolution within compact latent states while decoding actions, exposing the policy's
+            intent through explicit, supervisable reasoning signals. A model-agnostic compatibility
+            layer provides three primitives (detect, execute, and query) so that local VLMs or
+            online agent APIs can drive the policy directly, with long-horizon memory and
+            closed-loop error recovery delegated to the agent side.
+          </p>
+          <p>
+            On RoboTwin 2.0, RMBench, and a real Astribot S1 dual-arm platform, AR-WAM matches the
+            strongest baselines on standard manipulation (87.2% average success) and outperforms them
+            on memory-dependent and real-robot long-horizon tasks, improving success rates by 5.9%
+            and 36.7%, respectively, while maintaining the lowest inference latency (14.1 ms).
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Method ================= -->
+<section class="section" id="method" style="background: #fbfcfe;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3 section-heading">Method Overview</h2>
+        <div class="content">
+          <img class="figure-card" src="./image/overview.png" alt="AR-WAM method overview" style="width: 100%; height: auto; aspect-ratio: 2980 / 1090; padding: 0.5rem 1.25rem; box-sizing: border-box; background: #fff;">
+          <p class="figure-caption">
+            An agent grounds the target and issues a visual prompt <em>g</em> together with an atomic
+            operation <em>s</em>. A compact 0.5B world action model (a 0.2B transformer shared by a
+            reasoning expert and a world action expert, plus a frozen 0.3B vision encoder) predicts
+            an action chunk together with dual-level foresight signals. The reasoning expert runs once
+            per control cycle, and the world action expert then performs multi-step denoising while
+            reusing its KV cache.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="columns is-multiline" style="margin-top: 1.5rem;">
+      <div class="column is-4-desktop">
+        <div class="idea-card">
+          <span class="idea-icon"><i class="fas fa-vector-square"></i></span>
+          <h3>Visual Prompt, Not Language</h3>
+          <p>
+            A bounding-box visual grounding prompt specifies <em>where</em> to act, and a learnable
+            operation token specifies <em>which</em> atomic skill to perform (pick, place, click,
+            handover, &hellip;). Spatial conditioning replaces text: unambiguous, precise, and free of
+            redundant language understanding inside the policy.
+          </p>
+        </div>
+      </div>
+      <div class="column is-4-desktop">
+        <div class="idea-card">
+          <span class="idea-icon"><i class="fas fa-brain"></i></span>
+          <h3>Reasoning Expert + Dual-Level Foresight</h3>
+          <p>
+            A reasoning expert externalizes task intent as explicit, supervisable signals (target
+            mask, end-effector poses, and a task abstract), while visual and semantic foresight
+            predictions keep action generation future-aware. Both experts share one compact transformer.
+          </p>
+        </div>
+      </div>
+      <div class="column is-4-desktop">
+        <div class="idea-card">
+          <span class="idea-icon"><i class="fas fa-plug"></i></span>
+          <h3>Agent-Ready Compatibility Layer</h3>
+          <p>
+            Three model-agnostic primitives (detect, execute, and
+            query) let any VLM/LLM agent drive the policy directly. Long-horizon
+            memory and closed-loop failure recovery are delegated to the agent, keeping the policy
+            Markovian and compact.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Foresight ================= -->
+<section class="section" id="foresight">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3 section-heading">Dual-Level Foresight</h2>
+        <p class="section-subtitle">
+          Future-aware action generation in compact latent space
+        </p>
+        <div class="content has-text-justified" style="max-width: 880px; margin: 0 auto 1.75rem auto;">
+          <p>
+            A reasoning expert runs once per control cycle and externalizes task intent as explicit,
+            supervisable signals: a target mask, end-effector poses, and a task abstract. On top
+            of it, <strong>dual-level foresight</strong> keeps action generation future-aware: an
+            offline foresight-gist extractor compresses the temporal evolution between two endpoint
+            frames into a compact latent gist, with no actions or intermediate frames, and the
+            policy is aligned to predict both the <em>visual</em> foresight of the future scene and the
+            <em>semantic</em> foresight of the target within it. Removing foresight alignment costs
+            8.6% average success, and replacing the compact gist with raw future patch features drops
+            10.8%, below even the foresight-free variant. Reasoning attends to the object and the
+            target; foresight attends to where motion will occur.
+          </p>
+        </div>
+        <img class="figure-card" src="./image/foresight.png" alt="Foresight prediction visualization" style="width: 100%; max-width: 880px; height: auto; aspect-ratio: 1140 / 406; margin-bottom: 1.75rem;">
+        <img class="figure-card" src="./image/attention.png" alt="Attention maps of different token groups under three setups" style="width: 100%; max-width: 880px; height: auto; aspect-ratio: 1370 / 760; margin-top: 1.75rem;">
+        <p class="figure-caption">
+          Attention maps of different token groups under three setups (full model, without foresight,
+          without reasoning).
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Agent–Policy Loop ================= -->
+<section class="section" id="agent-loop" style="background: #fbfcfe;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3 section-heading">Agent-Policy Closed Loop</h2>
+        <p class="section-subtitle">
+          Event-triggered agent invocation through three primitives
+        </p>
+        <div style="margin-bottom: 1.5rem;">
+          <span class="primitive-chip"><i class="fas fa-magnifying-glass"></i> detect</span>
+          <span class="primitive-arrow"><i class="fas fa-arrow-right"></i></span>
+          <span class="primitive-chip"><i class="fas fa-play"></i> execute</span>
+          <span class="primitive-arrow"><i class="fas fa-arrow-right"></i></span>
+          <span class="primitive-chip"><i class="fas fa-circle-question"></i> query</span>
+          <span class="primitive-arrow"><i class="fas fa-rotate"></i></span>
+        </div>
+        <div class="content has-text-justified" style="max-width: 880px; margin: 0 auto 1.75rem auto;">
+          <p>
+            The agent is invoked only on trigger events: end-effector displacement, gripper
+            open/close, or a timeout. It grounds the target with its own perception
+            (detect), rolls out the policy until the next event
+            (execute), and receives structured feedback for its next reasoning step
+            (query). Commands and feedback accumulate in the agent&rsquo;s history, so
+            long-horizon memory lives entirely on the agent side. On a grasp failure or a dropped
+            object, the agent re-localizes the target and retries under a fixed budget, and the
+            policy&rsquo;s decoded intent helps diagnose whether a failure stems from wrong intent or
+            improper execution.
+          </p>
+        </div>
+        <img class="figure-card" src="./image/failure_recovery.png" alt="Failure recovery through the agent-policy loop" style="width: 100%; max-width: 900px; height: auto; aspect-ratio: 2217 / 750;">
+        <p class="figure-caption" style="margin-bottom: 1.75rem;">
+          Failure recovery through the agent-policy loop: the agent detects the failure, re-issues
+          an updated visual prompt, and retries, with no hardwired recovery behaviors.
+        </p>
+        <video class="video-card" data-autopause autoplay muted loop playsinline controls preload="metadata" style="width: 100%; max-width: 880px; height: auto; aspect-ratio: 1280 / 660;">
+          <source src="./video/recovery.mp4" type="video/mp4">
+        </video>
+        <p class="figure-caption">
+          Recovery rollouts on RoboTwin 2.0: after a failed grasp, the agent
+          re-grounds the target and issues a fresh visual prompt to retry.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Experiments ================= -->
+<section class="section" id="experiments">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3 section-heading">Experiments</h2>
+      </div>
+    </div>
+
+    <!-- ---------- RoboTwin ---------- -->
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="content has-text-centered">
+          <h3 class="title is-4" id="robotwin">RoboTwin 2.0</h3>
+          <p class="has-text-justified" style="max-width: 880px; margin: 0 auto 1.5rem auto;">
+            Ten dual-arm long-horizon tasks composing rich combinations of atomic skills, with
+            instructions issued by a benchmark expert equipped with an object detector. AR-WAM attains
+            the <strong>best average success rate in the randomized setting (84.2%)</strong> and stays
+            within 0.6% of the strongest baseline in the clean setting (87.2% vs. 87.8%), with
+            visual prompts instead of language instructions. Replacing the visual prompt with text
+            under identical training drops average success by 13.0%.
+          </p>
+        </div>
+        <div class="table-wrap">
+          <table class="table results-table is-fullwidth">
+            <thead>
+              <tr>
+                <th rowspan="2" style="text-align:left;">Task</th>
+                <th colspan="2">&pi;<sub>0.5</sub></th>
+                <th colspan="2">X-VLA</th>
+                <th colspan="2">Motus</th>
+                <th colspan="2">Fast-WAM</th>
+                <th colspan="2">LiLa-WAM</th>
+                <th colspan="2" class="ours">AR-WAM (Ours)</th>
+              </tr>
+              <tr>
+                <th>C</th><th>R</th>
+                <th>C</th><th>R</th>
+                <th>C</th><th>R</th>
+                <th>C</th><th>R</th>
+                <th>C</th><th>R</th>
+                <th class="ours">C</th><th class="ours">R</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="task-name">Blocks Ranking Size</td><td>49</td><td>26</td><td>67</td><td>74</td><td>75</td><td>63</td><td class="second">94</td><td class="best">98</td><td>92</td><td>88</td><td class="ours best">100</td><td class="ours second">94</td></tr>
+              <tr><td class="task-name">Handover Block</td><td>66</td><td>57</td><td>73</td><td>37</td><td>86</td><td>73</td><td class="best">99</td><td>80</td><td>96</td><td class="second">90</td><td class="ours second">98</td><td class="ours best">92</td></tr>
+              <tr><td class="task-name">Handover Mic</td><td class="second">98</td><td>97</td><td>0</td><td>0</td><td>78</td><td>63</td><td class="best">100</td><td class="best">100</td><td class="best">100</td><td class="second">98</td><td class="ours best">100</td><td class="ours best">100</td></tr>
+              <tr><td class="task-name">Hanging Mug</td><td>18</td><td>17</td><td>23</td><td>27</td><td>38</td><td>38</td><td class="best">65</td><td class="second">56</td><td class="second">56</td><td>44</td><td class="ours">54</td><td class="ours best">62</td></tr>
+              <tr><td class="task-name">Place Can Basket</td><td>62</td><td>62</td><td>49</td><td>52</td><td class="second">81</td><td class="second">76</td><td>72</td><td>67</td><td>80</td><td>72</td><td class="ours best">90</td><td class="ours best">82</td></tr>
+              <tr><td class="task-name">Place Dual Shoes</td><td>75</td><td>75</td><td>79</td><td class="best">88</td><td class="best">93</td><td class="second">87</td><td class="second">88</td><td class="best">88</td><td>60</td><td>54</td><td class="ours">86</td><td class="ours">78</td></tr>
+              <tr><td class="task-name">Put Bottles Dustbin</td><td>84</td><td>79</td><td>74</td><td>77</td><td>81</td><td>79</td><td class="second">93</td><td>82</td><td>92</td><td class="best">94</td><td class="ours best">96</td><td class="ours second">92</td></tr>
+              <tr><td class="task-name">Put Object Cabinet</td><td>80</td><td>79</td><td>46</td><td>48</td><td>88</td><td>71</td><td class="best">94</td><td class="second">82</td><td class="second">92</td><td class="best">92</td><td class="ours">78</td><td class="ours">70</td></tr>
+              <tr><td class="task-name">Scan Object</td><td>72</td><td>65</td><td>14</td><td>36</td><td>67</td><td>66</td><td class="best">96</td><td class="second">86</td><td class="second">94</td><td class="best">90</td><td class="ours">76</td><td class="ours second">86</td></tr>
+              <tr><td class="task-name">Stack Bowls Three</td><td>77</td><td>71</td><td>76</td><td class="second">86</td><td>79</td><td class="best">87</td><td>77</td><td class="second">86</td><td class="second">88</td><td>82</td><td class="ours best">94</td><td class="ours second">86</td></tr>
+              <tr class="row-avg"><td class="task-name">Average</td><td>68.1</td><td>62.8</td><td>50.1</td><td>52.5</td><td>76.6</td><td>70.3</td><td class="best">87.8</td><td class="second">82.5</td><td>85.0</td><td>80.4</td><td class="ours second">87.2</td><td class="ours best">84.2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note has-text-centered">
+          Success rates (%) over 50 trials per task, per setting. C: clean setting; R: randomized setting. Bold: best; underlined: second best.
+        </p>
+        <div class="content has-text-centered">
+          <video class="video-card" data-autopause autoplay muted loop playsinline controls preload="metadata" style="width: 100%; max-width: 880px; height: auto; aspect-ratio: 1280 / 560;">
+            <source src="./video/robotwin.mp4" type="video/mp4">
+          </video>
+          <p class="figure-caption">
+            Rollouts on all ten tasks (clean vs. randomized), with the agent-issued bounding box and the
+            operation token shown alongside the policy&rsquo;s reasoning readout.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- RMBench ---------- -->
+    <div class="columns is-centered" style="margin-top: 2.5rem;">
+      <div class="column is-full">
+        <div class="content has-text-centered">
+          <h3 class="title is-4" id="rmbench">RMBench</h3>
+          <p class="has-text-justified" style="max-width: 880px; margin: 0 auto 1.5rem auto;">
+            Memory-dependent tasks driven by off-the-shelf agents (a locally deployed
+            Qwen3.8-27B, AR-Q, and the online API Kimi-K3, AR-K) through the model-agnostic
+            interface. On the memory-heavy M(n) tasks, AR-WAM reaches <strong>52.5% / 63.5%
+            average success vs. 38.7%</strong> for the strongest memory-augmented baseline,
+            thanks to cleanly delegating memory management to the upstream agent.
+          </p>
+        </div>
+        <div class="table-wrap">
+          <table class="table results-table is-fullwidth">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Task</th>
+                <th>&pi;<sub>0.5</sub></th>
+                <th>Fast-WAM</th>
+                <th>Goal2Skill</th>
+                <th>Mem-0</th>
+                <th>Cortex</th>
+                <th>LiLa-WAM</th>
+                <th class="ours">AR-K</th>
+                <th class="ours">AR-Q</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="task-name">Observe and Pick Up</td><td>9</td><td>0</td><td>8</td><td>4</td><td>14</td><td>10</td><td class="ours second">44</td><td class="ours best">84</td></tr>
+              <tr><td class="task-name">Rearrange Blocks</td><td>13</td><td>0</td><td>38</td><td class="second">89</td><td class="best">100</td><td>20</td><td class="ours">62</td><td class="ours second">86</td></tr>
+              <tr><td class="task-name">Put Back Block</td><td>11</td><td>0</td><td>&ndash;</td><td class="second">90</td><td class="best">100</td><td>14</td><td class="ours">58</td><td class="ours second">88</td></tr>
+              <tr><td class="task-name">Swap Blocks</td><td>24</td><td>0</td><td>&ndash;</td><td class="second">67</td><td class="best">99</td><td>10</td><td class="ours">68</td><td class="ours second">82</td></tr>
+              <tr><td class="task-name">Swap T</td><td>15</td><td>7</td><td>&ndash;</td><td>14</td><td class="best">63</td><td class="second">18</td><td class="ours second">18</td><td class="ours">16</td></tr>
+              <tr class="row-avg"><td class="task-name">M(1) Tasks Average</td><td>14.4</td><td>1.4</td><td>23.0</td><td>52.8</td><td class="best">75.2</td><td>14.4</td><td class="ours">50.0</td><td class="ours second">71.2</td></tr>
+              <tr><td class="task-name">Battery Try</td><td>16</td><td>20</td><td class="second">46</td><td>28</td><td>37</td><td>24</td><td class="ours">38</td><td class="ours best">52</td></tr>
+              <tr><td class="task-name">Blocks Ranking Try</td><td>6</td><td>26</td><td class="best">60</td><td>18</td><td>&ndash;</td><td>30</td><td class="ours">18</td><td class="ours second">34</td></tr>
+              <tr><td class="task-name">Cover Blocks</td><td>0</td><td>0</td><td>&ndash;</td><td>68</td><td>&ndash;</td><td>0</td><td class="ours second">72</td><td class="ours best">78</td></tr>
+              <tr><td class="task-name">Press Button</td><td>0</td><td>0</td><td>10</td><td>0</td><td>20</td><td>0</td><td class="ours second">82</td><td class="ours best">90</td></tr>
+              <tr class="row-avg"><td class="task-name">M(n) Tasks Average</td><td>5.5</td><td>11.5</td><td>38.7</td><td>28.5</td><td>28.5</td><td>13.5</td><td class="ours second">52.5</td><td class="ours best">63.5</td></tr>
+              <tr class="row-avg"><td class="task-name">Total Average</td><td>10.4</td><td>5.9</td><td>32.4</td><td>42.0</td><td class="second">61.9</td><td>14.0</td><td class="ours">51.1</td><td class="ours best">67.8</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note has-text-centered">
+          Success rates (%) over 50 trials per task. AR-K / AR-Q: AR-WAM integrated with Kimi-K3 /
+          Qwen3.8-27B as the agent. &ndash;: not applicable / not reported. Bold: best; underlined: second best.
+        </p>
+        <div class="content has-text-centered">
+          <video class="video-card" data-autopause autoplay muted loop playsinline controls preload="metadata" style="width: 100%; max-width: 880px; height: auto; aspect-ratio: 1280 / 600;">
+            <source src="./video/rmbench.mp4" type="video/mp4">
+          </video>
+          <p class="figure-caption">
+            The agent-policy closed loop on memory-dependent tasks: the agent reasons over its
+            history and issues a bounding box plus an atomic skill for the policy to execute.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- Real world ---------- -->
+    <div class="columns is-centered" style="margin-top: 2.5rem;">
+      <div class="column is-full">
+        <div class="content has-text-centered">
+          <h3 class="title is-4" id="realworld">Real-World Evaluation</h3>
+          <p class="has-text-justified" style="max-width: 880px; margin: 0 auto 1.5rem auto;">
+            Three challenging long-horizon tasks on a real <strong>Astribot S1</strong> dual-arm
+            platform, all requiring agent-side reasoning and memory: pressing bells a specified number
+            of times, picking up a specified bottle twice, and placing an egg into a specified cell.
+            For each task, the simulation-trained policy is fine-tuned on 100 real-world demonstrations
+            and driven by a locally deployed Qwen3.8-27B. AR-WAM achieves the
+            <strong>highest success on all three tasks (71.7% average vs. 35.0% for &pi;<sub>0.5</sub>)</strong>.
+          </p>
+        </div>
+        <div class="table-wrap" style="max-width: 640px; margin-left: auto; margin-right: auto;">
+          <table class="table results-table is-fullwidth">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Task</th>
+                <th>&pi;<sub>0.5</sub></th>
+                <th>LiLa-WAM</th>
+                <th class="ours">AR-WAM (Ours)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="task-name">Press bells X times</td><td>5</td><td>10</td><td class="ours best">70</td></tr>
+              <tr><td class="task-name">Pick up X bottle twice</td><td>45</td><td>40</td><td class="ours best">65</td></tr>
+              <tr><td class="task-name">Place egg into X cell</td><td>55</td><td>45</td><td class="ours best">80</td></tr>
+              <tr class="row-avg"><td class="task-name">Average</td><td>35.0</td><td>31.7</td><td class="ours best">71.7</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note has-text-centered">
+          Success rates (%) over 20 trials per task. Bold: best.
+        </p>
+        <div class="content has-text-centered">
+          <video class="video-card" data-autopause autoplay muted loop playsinline controls preload="metadata" style="width: 100%; max-width: 880px; height: auto; aspect-ratio: 1280 / 540;">
+            <source src="./video/realworld.mp4" type="video/mp4">
+          </video>
+          <p class="figure-caption">
+            Real-robot rollouts of the three tasks (&times;4 speed): two seen cases and one unseen
+            case per task. The red box is the agent-issued visual prompt.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- Efficiency ---------- -->
+    <div class="columns is-centered" style="margin-top: 2.5rem;">
+      <div class="column is-full">
+        <div class="content has-text-centered">
+          <h3 class="title is-4" id="efficiency">Efficiency</h3>
+          <p class="has-text-justified" style="max-width: 880px; margin: 0 auto 1.5rem auto;">
+            Measured on a single RTX 4090 in bf16 with identical inputs. AR-WAM attains the
+            <strong>lowest end-to-end latency (14.09 ms per action chunk)</strong>, 4.4&times;
+            faster than &pi;<sub>0.5</sub> and 22.7&times; faster than Fast-WAM, benefiting from
+            the shared reasoning-denoising forward pass and KV-cache reuse.
+          </p>
+        </div>
+        <div class="table-wrap" style="max-width: 720px; margin-left: auto; margin-right: auto;">
+          <table class="table results-table is-fullwidth">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Method</th>
+                <th>Encoder &amp; Misc.</th>
+                <th>KV Cache</th>
+                <th>ODE (per step)</th>
+                <th>End-to-end</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="task-name">&pi;<sub>0.5</sub></td><td>19.74</td><td class="second">23.36</td><td>2.11 (&times;9)</td><td>62.09</td></tr>
+              <tr><td class="task-name">Fast-WAM</td><td>27.55</td><td>52.56</td><td>26.58 (&times;9)</td><td>319.33</td></tr>
+              <tr><td class="task-name">LiLa-WAM</td><td class="second">4.77</td><td>&ndash;</td><td class="second">1.02 (&times;10)</td><td class="second">14.97</td></tr>
+              <tr><td class="task-name ours">AR-WAM (Ours)</td><td class="ours best">4.41</td><td class="ours best">3.74</td><td class="ours best">0.66 (&times;9)</td><td class="ours best">14.09</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note has-text-centered">
+          Per-stage inference latency (ms). ODE: latency per denoising step, with the number of steps in parentheses. Bold: fastest; underlined: second fastest.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BibTeX ================= -->
+<section class="section" id="bibtex" style="background: #fbfcfe;">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 section-heading has-text-centered" style="display:block;">BibTeX</h2>
+    <pre><code>@article{jiang2026arwam,
+  title={AR-WAM: A Visual-Conditioned Agent-Ready World Action Model for Robotic Manipulation},
+  author={Jiang, Yicheng and Gan, Zesen and Wang, Xiaobo and He, Tianlun and Zhao, Chenxu and Wu, Minghui and Wang, Xinyue and Wang, Jiaxu and He, Junhao and Wang, Jianan and Shao, Qiming},
+  journal={arXiv preprint arXiv:2609.23578},
+  year={2026}
+}</code></pre>
+  </div>
+</section>
+
+<!-- ================= Footer ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="https://arxiv.org/abs/2609.23578" aria-label="arXiv">
+        <i class="ai ai-arxiv"></i>
+      </a>
+      <a class="icon-link" href="https://arxiv.org/pdf/2609.23578" aria-label="Paper PDF">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            This website is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
+            Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
