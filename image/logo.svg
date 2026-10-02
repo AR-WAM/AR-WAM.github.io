@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- M2: same arm, empty open gripper -->
+  <polygon points="5,57 24,57 21,49 8,49" fill="#0057b8"/>
+  <path d="M15.5 45 L31 15" fill="none" stroke="#0057b8" stroke-width="9" stroke-linecap="round"/>
+  <path d="M31 15 L46 42" fill="none" stroke="#0057b8" stroke-width="7.5" stroke-linecap="round"/>
+  <circle cx="15.5" cy="45" r="3.75" fill="none" stroke="#0057b8" stroke-width="3.5"/>
+  <circle cx="31" cy="15" r="3.25" fill="none" stroke="#cc9900" stroke-width="3.5"/>
+  <circle cx="46" cy="42" r="2.25" fill="none" stroke="#0057b8" stroke-width="3"/>
+  <path d="M46 42 L41 50 M46 42 L51 50" fill="none" stroke="#0057b8" stroke-width="4.5" stroke-linecap="round"/>
+</svg>

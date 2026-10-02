@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="./static/fontawesome/css/all.min.css">
   <link rel="stylesheet" href="./static/academicons/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="./image/favicon.svg">
 
   <script defer src="./static/js/index.js"></script>
 </head>
@@ -22,7 +22,7 @@
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item navbar-title" href="#top">
-        <span class="icon"><i class="fas fa-robot"></i></span>
+        <span class="icon"><img src="./image/logo.svg" alt="AR-WAM logo" style="height: 1.4rem; width: 1.4rem;"></span>
         <span>&nbsp;AR-WAM</span>
       </a>
       <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
@@ -164,15 +164,15 @@
             As AI agents become increasingly capable, agent-driven robotic control is emerging as a
             compelling paradigm. However, prevailing vision-language-action (VLA) models and
             world action models (WAMs) still rely on natural-language instructions to specify
-            manipulation tasks, an ill-suited interface for agent-driven control: referentially
+            manipulation tasks, <strong>an ill-suited interface for agent-driven control</strong>: referentially
             ambiguous, spatially imprecise, redundant with the agent's inherent language
             understanding, and entangling intent with execution.
           </p>
           <p>
             We present AR-WAM, a visual-conditioned, agent-ready world action model that replaces
-            language with two complementary conditions: a visual grounding prompt (a bounding
-            box of the target) denoting the interaction object and location, and a learnable
-            operation token dictating the atomic skill to execute. Our compact 0.5B-parameter
+            language with two complementary conditions: a <strong>visual grounding prompt</strong> (a bounding
+            box of the target) denoting the interaction object and location, and a <strong>learnable
+            operation token</strong> dictating the atomic skill to execute. Our compact 0.5B-parameter
             model, with a frozen pretrained visual encoder and no language encoder, predicts scene
             evolution within compact latent states while decoding actions, exposing the policy's
             intent through explicit, supervisable reasoning signals. A model-agnostic compatibility
@@ -181,10 +181,11 @@
             closed-loop error recovery delegated to the agent side.
           </p>
           <p>
-            On RoboTwin 2.0, RMBench, and a real Astribot S1 dual-arm platform, AR-WAM matches the
-            strongest baselines on standard manipulation (87.2% average success) and outperforms them
-            on memory-dependent and real-robot long-horizon tasks, improving success rates by 5.9%
-            and 36.7%, respectively, while maintaining the lowest inference latency (14.1 ms).
+            On RoboTwin 2.0, RMBench, and a real Astribot S1 dual-arm platform, AR-WAM attains the
+            <strong>highest average success on standard manipulation (85.7% over the clean and randomized
+            settings)</strong> and outperforms all baselines on memory-dependent and real-robot long-horizon
+            tasks, <strong>improving success rates by 5.9% and 36.7%, respectively</strong>, while maintaining
+            the <strong>lowest inference latency (14.1 ms)</strong>.
           </p>
         </div>
       </div>
@@ -264,12 +265,12 @@
           <p>
             A reasoning expert runs once per control cycle and externalizes task intent as explicit,
             supervisable signals: a target mask, end-effector poses, and a task abstract. On top
-            of it, <strong>dual-level foresight</strong> keeps action generation future-aware: an
+            of it, dual-level foresight keeps action generation future-aware: an
             offline foresight-gist extractor compresses the temporal evolution between two endpoint
             frames into a compact latent gist, with no actions or intermediate frames, and the
             policy is aligned to predict both the <em>visual</em> foresight of the future scene and the
-            <em>semantic</em> foresight of the target within it. Removing foresight alignment costs
-            8.6% average success, and replacing the compact gist with raw future patch features drops
+            <em>semantic</em> foresight of the target within it. <strong>Removing foresight alignment costs
+            8.6% average success</strong>, and replacing the compact gist with raw future patch features drops
             10.8%, below even the foresight-free variant. Reasoning attends to the object and the
             target; foresight attends to where motion will occur.
           </p>
@@ -309,7 +310,7 @@
             (detect), rolls out the policy until the next event
             (execute), and receives structured feedback for its next reasoning step
             (query). Commands and feedback accumulate in the agent&rsquo;s history, so
-            long-horizon memory lives entirely on the agent side. On a grasp failure or a dropped
+            <strong>long-horizon memory lives entirely on the agent side</strong>. On a grasp failure or a dropped
             object, the agent re-localizes the target and retries under a fixed budget, and the
             policy&rsquo;s decoded intent helps diagnose whether a failure stems from wrong intent or
             improper execution.
@@ -352,7 +353,7 @@
             the <strong>best average success rate in the randomized setting (84.2%)</strong> and stays
             within 0.6% of the strongest baseline in the clean setting (87.2% vs. 87.8%), with
             visual prompts instead of language instructions. Replacing the visual prompt with text
-            under identical training drops average success by 13.0%.
+            under identical training <strong>drops average success by 13.0%</strong>.
           </p>
         </div>
         <div class="table-wrap">
@@ -472,7 +473,7 @@
         <div class="content has-text-centered">
           <h3 class="title is-4" id="realworld">Real-World Evaluation</h3>
           <p class="has-text-justified" style="max-width: 880px; margin: 0 auto 1.5rem auto;">
-            Three challenging long-horizon tasks on a real <strong>Astribot S1</strong> dual-arm
+            Three challenging long-horizon tasks on a real Astribot S1 dual-arm
             platform, all requiring agent-side reasoning and memory: pressing bells a specified number
             of times, picking up a specified bottle twice, and placing an egg into a specified cell.
             For each task, the simulation-trained policy is fine-tuned on 100 real-world demonstrations

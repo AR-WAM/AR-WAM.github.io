@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- foresight: solid current frame (grounded), dashed gold future frame — scaled to fill -->
+  <g transform="translate(32 32) scale(1.15) translate(-31 -30.5)">
+    <rect x="27" y="7" width="29" height="29" rx="8" fill="none" stroke="#cc9900" stroke-width="4" stroke-dasharray="6 5"/>
+    <rect x="8" y="21" width="34" height="34" rx="9" fill="#0057b8"/>
+    <g fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 37 V29 H24"/>
+      <path d="M32 29 H40 V37"/>
+      <path d="M40 47 V55 H32"/>
+      <path d="M24 55 H16 V47"/>
+    </g>
+  </g>
+</svg>
